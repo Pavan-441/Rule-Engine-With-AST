@@ -247,3 +247,11 @@ This project is a **Rule Engine** designed to evaluate user eligibility based on
     "rule_name": "rule2"
 }
      ```
+
+## Contact
+
+For any inquiries or issues, please contact:
+- Email: pavank0066@gmail.com
+- Phone: +91 9398099646
+
+---
