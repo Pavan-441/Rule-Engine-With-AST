@@ -45,7 +45,19 @@ This project is a **Rule Engine** designed to evaluate user eligibility based on
    The server will run on `http://127.0.0.1:5000/`.
 
 ## API Documentation
-
+   **POSTMAN API**:
+   **Create POST file**:
+   - After creation of collections select body under that select raw with JSON content and then write the SQL queries.
+   - Created collections like create_rule, evaluate_rule, modify_rule, and combine_rules.
+   - create_rule is used to create sql queries.
+   - evaluate_rule is used to evaluate the queries.
+   - modify_rule is used to change the query rules.
+   - Finally combine_rules is used to combine the multiple rules.
+        - For multiple rules we need to create more create_rule collections.
+        - Then add query for combibine the query rules.
+   - Verify for the multiple testcases for the better output.
+   - Use testcases like multiple nodes, multiple number of rules and so on...
+   
 ### 1. **Create Rule**
    - **Endpoint**: `/create_rule`
    - **Method**: `POST`
@@ -54,26 +66,50 @@ This project is a **Rule Engine** designed to evaluate user eligibility based on
      ```json
      {
        "rule_name": "rule1",
-       "rule_string": "(age > 30 AND department = 'Sales')"
+       "rule_string": "((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)"
      }
      ```
    - **Response** (Success):
      ```json
      {
-       "rule_name": "rule1",
-       "ast": {
-         "node_type": "operator",
-         "value": "AND",
-         "left": {
-           "node_type": "operand",
-           "value": "age > 30"
-         },
-         "right": {
-           "node_type": "operand",
-           "value": "department = 'Sales'"
-         }
-       }
-     }
+    "ast": {
+        "left": {
+            "left": {
+                "left": null,
+                "node_type": "operand",
+                "right": null,
+                "value": "age > 30"
+            },
+            "node_type": "operator",
+            "right": {
+                "left": null,
+                "node_type": "operand",
+                "right": null,
+                "value": "department = 'Sales'"
+            },
+            "value": "AND"
+        },
+        "node_type": "operator",
+        "right": {
+            "left": {
+                "left": null,
+                "node_type": "operand",
+                "right": null,
+                "value": "age < 25"
+            },
+            "node_type": "operator",
+            "right": {
+                "left": null,
+                "node_type": "operand",
+                "right": null,
+                "value": "department = 'Marketing'"
+            },
+            "value": "AND"
+        },
+        "value": "OR"
+    },
+    "rule_name": "rule1"
+}
      ```
 
 ### 2. **Evaluate Rule**
@@ -177,4 +213,37 @@ This project is a **Rule Engine** designed to evaluate user eligibility based on
          }
        }
      }
+     ```
+### 5. **Create Rule**
+   - **Endpoint**: `/create_rule`
+   - **Method**: `POST`
+   - **Description**: This endpoint creates a new rule and stores it in the database.
+   - **Request Body**:
+     ```json
+     {
+       "rule_name": "rule2",
+       "rule_string": "((age > 30 AND department = 'Marketing')) AND (salary > 20000 OR experience > 5)"
+     }
+     ```
+   - **Response** (Success):
+     ```json
+     {
+    "ast": {
+        "left": {
+            "left": null,
+            "node_type": "operand",
+            "right": null,
+            "value": "age > 30"
+        },
+        "node_type": "operator",
+        "right": {
+            "left": null,
+            "node_type": "operand",
+            "right": null,
+            "value": "department = 'Marketing'"
+        },
+        "value": "AND"
+    },
+    "rule_name": "rule2"
+}
      ```
